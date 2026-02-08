@@ -21,16 +21,19 @@ jobs:
 
       - name: Install Ionic & Capacitor
         run: |
+          cd myApp
           npm install -g @ionic/cli
           npm install
 
       - name: Build Ionic App
         run: |
+          cd myApp
           echo "NG_APP_GROQ_KEY=${{ secrets.NG_APP_GROQ_KEY }}" >> .env
           ionic build
 
       - name: Add Android platform
         run: |
+          cd myApp
           npx cap add android || true
           npx cap copy
 
@@ -42,7 +45,7 @@ jobs:
 
       - name: Build APK with Gradle
         run: |
-          cd android
+          cd myApp/android
           chmod +x gradlew
           ./gradlew assembleDebug
 
@@ -50,4 +53,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-debug.apk
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          path: myApp/android/app/build/outputs/apk/debug/app-debug.apk
